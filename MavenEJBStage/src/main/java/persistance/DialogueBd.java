@@ -1,12 +1,15 @@
- package  persistance;
+package persistance;
 
-
-import java.sql.*;
-import java.util.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 
 import meserreurs.MonException;
 
-public class DialogueBd  {
+public class DialogueBd {
 
 	private static DialogueBd instance = null;
 
@@ -21,7 +24,7 @@ public class DialogueBd  {
 		super();
 	}
 
-	public void insertionBD(String mysql) throws MonException {
+	public static void insertionBD(String mysql) throws MonException {
 		Connection cnx = null;
 		try {
 			cnx = Connexion.getInstance().getConnexion();
@@ -43,7 +46,7 @@ public class DialogueBd  {
 		}
 	}
 
-	public ArrayList<Object> lecture(String req) throws MonException {
+	public static ArrayList<Object> lecture(String req) throws MonException {
 		Connection cnx = null;
 		Statement stmt;
 		ResultSet rs;
@@ -57,7 +60,7 @@ public class DialogueBd  {
 			stmt.executeQuery("SET NAMES UTF8");
 			// Execution de la requete
 			rs = stmt.executeQuery(req);
-			// on retrouve le nombre de colonnes de la requête
+			// on retrouve le nombre de colonnes de la requï¿½te
 			ResultSetMetaData rsmd = rs.getMetaData();
 			nbCols = rsmd.getColumnCount();
 			i = 1;
@@ -81,8 +84,8 @@ public class DialogueBd  {
 			System.out.println(e.getMessage());
 			throw new MonException(e.getMessage());
 		} finally {
-			// S'il y a eu un problème, la connexion
-			// peut être encore ouverte, dans ce cas
+			// S'il y a eu un problï¿½me, la connexion
+			// peut ï¿½tre encore ouverte, dans ce cas
 			// il faut la fermer.
 
 			if (cnx != null)
@@ -102,8 +105,7 @@ public class DialogueBd  {
 			System.out.println(mysql);
 			// on ferme la connexion
 			cnx.close();
-		} catch (SQLException e)
-		{
+		} catch (SQLException e) {
 			throw new MonException(e.getMessage());
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
